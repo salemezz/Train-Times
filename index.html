@@ -5,47 +5,22 @@
   <head>
 
     <meta charset="UTF-8">
-    <title>Sign-Up Today!</title>
+    <title>My Train Schedule</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!-- LINK TO FIREBASE GOES HERE -->
-    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Gugi|IBM+Plex+Mono" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
   </head>
 
   <body>
-<!-- Current Trains-->
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title"><strong>Train Times</strong></h3>
-        </div>
-        <div class="panel-body">
-            <table class="table table-hover" id='train-table'>
-            <thead>
-                <tr>
-                <th>Train Name</th>
-                <th>Destination</th>
-                <th>Frequency (min)</th>
-                <th>Next Arrival</th>
-                <th>Minutes Away</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            </table>
-        </div>
-        </div>
-        
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-            <h3 class="panel-title"><strong>Add A Train</strong></h3>
-            </div>
-            <div class="panel-body">          
-            <!-- Entry Form -->
+    <div id="myModal" class="modal">
+    <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
             <form>
                 <div class="form-group">
                 <label for="train-name-input">Train Name</label>
@@ -65,18 +40,35 @@
                 </div>
                 <button class="btn btn-primary" id="add-train-btn" type="submit">Submit</button>
             </form>
-
-            </div>
-
         </div>
-
-        </div>
-
     </div>
 
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 id="panel-title"><strong>Train Times</strong></h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover" id='train-table'>
+                <thead>
+                    <tr>
+                        <th>Train Name</th>
+                        <th>Destination</th>
+                        <th>Frequency (min)</th>
+                        <th>Next Arrival</th>
+                        <th>Minutes Away</th>
+                    </tr>
+                </thead>
+            <tbody>
+            </tbody>
+            </table>
+        </div>
+            <!-- Trigger/Open The Modal -->
+        <button class="btn btn-primary" id="myBtn">Add Train</button> 
     </div>
+
+    <img id="amtrak-pic" src="assets/images/amtrak_advertisement.jpg">
     <script>
-        // Initialize Firebase
+
         var config = {
             apiKey: "AIzaSyAnoKL6zjMzEgt4Y7bjVcPxgvYP8AqUjxM",
             authDomain: "traintime-a68bf.firebaseapp.com",
@@ -90,8 +82,34 @@
 
         var database = firebase.database();
 
-
         //Button for adding Employees
+        // Get the modal
+        var modal = document.getElementById('myModal');
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on the button, open the modal 
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
         $("#add-train-btn").on("click", function (event) {
             event.preventDefault();
             // Grabs user input
@@ -108,12 +126,9 @@
  
             var currentTime = moment();
             console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
-
-            // Difference between the times
             var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
             console.log("DIFFERENCE IN TIME: " + diffTime);
-            // Minute Until Train
-                        // Time apart (remainder)
+
             var remainder = diffTime % frequency;
             console.log(remainder);
 
@@ -138,7 +153,6 @@
         database.ref().on("child_added", function(childSnapshot) {
                 console.log(childSnapshot.val().minutesTillTrain);
                 console.log(childSnapshot.val().nextTrain);
-
                 // full list of items to the well
                 //$("#train-table").append(childSnapshot.val().name;
                 var newRow = "<tr><td>" + childSnapshot.val().trainName + "</td><td>" + childSnapshot.val().destination + "</td><td>" + childSnapshot.val().frequency + "</td><td>" + childSnapshot.val().nextTrain + "</td><td>" + childSnapshot.val().minutesTillTrain + "</td></tr>";
