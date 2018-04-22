@@ -8,65 +8,72 @@
     <title>My Train Schedule</title>
 
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Gugi|IBM+Plex+Mono" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
   </head>
 
   <body>
-    <div id="myModal" class="modal">
-    <!-- Modal content -->
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <form>
-                <div class="form-group">
-                <label for="train-name-input">Train Name</label>
-                <input class="form-control" id="train-name-input" type="text">
+    <div class="container">
+        <div class="row">
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <form>
+                        <div class="form-group">
+                        <label for="train-name-input">Train Name</label>
+                        <input class="form-control" id="train-name-input" type="text">
+                        </div>
+                        <div class="form-group">
+                        <label for="destination-input">Destination</label>
+                        <input class="form-control" id="destination-input" type="text">
+                        </div>
+                        <div class="form-group">
+                        <label for="first-train-time-input">First Train Time</label>
+                        <input class="form-control" id="first-train-time-input" type="text">
+                        </div>
+                        <div class="form-group">
+                        <label for="frequency-input">Frequency (min)</label>
+                        <input class="form-control" id="frequency-input" type="text">
+                        </div>
+                        <button class="btn btn-primary" id="add-train-btn" type="submit">Submit</button>
+                    </form>
                 </div>
-                <div class="form-group">
-                <label for="destination-input">Destination</label>
-                <input class="form-control" id="destination-input" type="text">
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 id="panel-title"><strong>Train Times</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-hover" id='train-table'>
+                            <thead>
+                                <tr>
+                                    <th>Train Name</th>
+                                    <th>Destination</th>
+                                    <th>Frequency (min)</th>
+                                    <th>Next Arrival</th>
+                                    <th>Minutes Away</th>
+                                </tr>
+                            </thead>
+                        <tbody>
+                        </tbody>
+                        </table>
+                    </div>
+                        <!-- Trigger/Open The Modal -->
+                    <button class="btn btn-primary" id="myBtn">Add Train</button> 
                 </div>
-                <div class="form-group">
-                <label for="first-train-time-input">First Train Time</label>
-                <input class="form-control" id="first-train-time-input" type="text">
-                </div>
-                <div class="form-group">
-                <label for="frequency-input">Frequency (min)</label>
-                <input class="form-control" id="frequency-input" type="text">
-                </div>
-                <button class="btn btn-primary" id="add-train-btn" type="submit">Submit</button>
-            </form>
+            </div>
+            <div class="col-md-6">
+                <img id="amtrak-pic" class="img-fluid" src="assets/images/amtrak_advertisement.jpg">
+            </div>
         </div>
     </div>
-
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 id="panel-title"><strong>Train Times</strong></h3>
-        </div>
-        <div class="panel-body">
-            <table class="table table-hover" id='train-table'>
-                <thead>
-                    <tr>
-                        <th>Train Name</th>
-                        <th>Destination</th>
-                        <th>Frequency (min)</th>
-                        <th>Next Arrival</th>
-                        <th>Minutes Away</th>
-                    </tr>
-                </thead>
-            <tbody>
-            </tbody>
-            </table>
-        </div>
-            <!-- Trigger/Open The Modal -->
-        <button class="btn btn-primary" id="myBtn">Add Train</button> 
-    </div>
-
-    <img id="amtrak-pic" src="assets/images/amtrak_advertisement.jpg">
     <script>
 
         var config = {

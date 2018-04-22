@@ -14,9 +14,8 @@ form {
 }
 
 .panel-primary {
-    width: 700px;
-    float: left;
-    margin: 5px;
+    height: 100%;
+    margin: auto;
 }
 #myBtn {
     float: left;
@@ -25,8 +24,6 @@ form {
 #amtrak-pic {
     margin-top: 5px;
     margin-left: 5px;
-    width: 700px;
-    height: auto;
 }
 /* Modal Header */
 .modal-header {
